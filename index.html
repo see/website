@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beerus.net</title>
+    <link rel="icon" type="image/x-icon" href="pfp.ico" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes skyFlight {
+            0% {
+                background-position: 0% 50%;
+                background-size: 200% 200%;
+            }
+            50% {
+                background-position: 100% 50%;
+                background-size: 300% 300%;
+            }
+            100% {
+                background-position: 0% 50%;
+                background-size: 200% 200%;
+            }
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            color: #FFD700;
+            text-align: center;
+            background: linear-gradient(225deg, 
+                #1a237e,
+                #4a148c,
+                #311b92,
+                #6a1b9a,
+                #4527a0
+            );
+            background-size: 400% 400%;
+            animation: skyFlight 20s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glare {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+        }
+
+        @keyframes containerFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(0.5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        .container {
+            background: rgba(88, 61, 142, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            animation: containerFloat 6s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3),
+            inset 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid #FFD700;
+            border-radius: 24px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes borderGlow {
+            0% {
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.3),
+                            inset 0 0 15px rgba(255, 215, 0, 0.3);
+                border-color: rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+                            inset 0 0 20px rgba(255, 215, 0, 0.5);
+                border-color: rgba(255, 215, 0, 1);
+            }
+            100% {
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.3),
+                            inset 0 0 15px rgba(255, 215, 0, 0.3);
+                border-color: rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        @keyframes profileGlow {
+            0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.2); }
+            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.1); }
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #FFD700;
+            padding: 0px;
+            margin: 0 0 20px 0;
+            animation: profileGlow 3s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3); }
+            100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        }
+
+        .username {
+            margin: 15px 0 25px 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #FFD700;
+            animation: textGlow 3s ease-in-out infinite;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes linkHover {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(88, 61, 142, 0.6);
+            color: #FFD700;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .link:hover {
+            animation: linkHover 0.8s ease;
+            background: rgba(88, 61, 142, 0.8);
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+            transform: translateY(-50%) skewX(-25deg);
+            transition: 0.5s;
+        }
+
+        .link:hover::after {
+            left: 100%;
+        }
+
+        #music-player {
+            margin-top: 30px;
+            background: rgba(88, 61, 142, 0.8);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 15px;
+        }
+
+        .control-button {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .control-button:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .play-pause-button {
+            padding: 16px;
+        }
+
+        .slider-container {
+            display: grid;
+            grid-template-columns: 45px 1fr 45px;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 0 12px;
+        }
+
+        .track-slider-container {
+            margin-bottom: 15px;
+        }
+
+        #track-slider, #volume-control {
+            width: 100%;
+            appearance: none;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 2px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        #track-slider::-webkit-slider-thumb, #volume-control::-webkit-slider-thumb {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #FFD700;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        #track-slider::-webkit-slider-thumb:hover, #volume-control::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+
+        .time-display, .volume-display {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255, 215, 0, 0.9);
+            text-align: center;
+            width: 45px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .volume-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+        }
+
+        .volume-icon {
+            cursor: pointer;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.imgur.com/Ezh6mAK.jpeg" alt="Beerus Profile Picture" class="profile-pic">
+        
+        <div class="username">
+            Tokyo
+        </div>
+
+        <div class="links">
+            <a href="https://oguser.com/Tokyo" class="link" target="_blank">OGU</a>
+            <a href="https://x.com/Batarang" class="link" target="_blank">X</a>
+            <a href="https://soundcloud.com/Shibuya" class="link" target="_blank">SoundCloud</a>
+            <a href="https://fortnitetracker.com/profile/all/Bamboo" class="link" target="_blank">Epic Games</a>
+        </div>
+
+        <div id="music-player">
+            <div class="music-controls">
+                <button class="control-button" onclick="seekBackward()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M19 20L9 12L19 4V20Z"></path>
+                        <path d="M5 19V5"></path>
+                    </svg>
+                </button>
+                <button class="control-button play-pause-button" onclick="togglePlay()">
+                    <svg id="playPauseIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                </button>
+                <button class="control-button" onclick="seekForward()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                        <path d="M5 4L15 12L5 20V4Z"></path>
+                        <path d="M19 5V19"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="slider-container track-slider-container">
+                <span id="current-time" class="time-display">0:00</span>
+                <input type="range" id="track-slider" min="0" max="100" value="0" oninput="seek(this.value)">
+                <span id="total-time" class="time-display">0:00</span>
+            </div>
+            
+            <div class="slider-container">
+                <div class="volume-controls">
+                    <svg id="volumeIcon" class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" onclick="toggleMute()">
+                        <path d="M11 5L6 9H2V15H6L11 19V5Z"></path>
+                        <path class="volume-wave" d="M15.54 8.46C16.4774 9.39764 17.0039 10.6692 17.0039 12C17.0039 13.3308 16.4774 14.6024 15.54 15.54"></path>
+                        <path class="volume-wave-2" d="M19.07 4.93C20.9447 6.80527 21.9979 9.34835 21.9979 12C21.9979 14.6516 20.9447 17.1947 19.07 19.07"></path>
+                    </svg>
+                </div>
+                <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.15" oninput="changeVolume(this.value)">
+                <span class="volume-display">15%</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let music = null;
+        let trackSlider = document.getElementById('track-slider');
+        let currentTimeDisplay = document.getElementById('current-time');
+        let totalTimeDisplay = document.getElementById('total-time');
+        let playPauseIcon = document.getElementById('playPauseIcon');
+        let volumeDisplay = document.querySelector('.volume-display');
+        let volumeControl = document.getElementById('volume-control');
+        let previousVolume = 0.5;
+        let isMuted = false;
+        let isSeeking = false;
+    
+        function initializeAudio() {
+            music = new Howl({
+                src: ['background.mp3'],
+                html5: true,
+                volume: 0.15, // Set the default volume to 15%
+                onload: function() {
+                    totalTimeDisplay.textContent = formatTime(this.duration());
+                    trackSlider.max = this.duration();
+                },
+                onplay: function() {
+                    requestAnimationFrame(updateTrackProgress);
+                    playPauseIcon.innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"></path>';
+                },
+                onpause: function() {
+                    playPauseIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
+                }
+            });
+        }
+    
+        initializeAudio();
+    
+        function togglePlay() {
+            if (!music) return;
+            if (music.playing()) {
+                music.pause();
+            } else {
+                music.play();
+            }
+        }
+    
+        function updateTrackProgress() {
+            if (!music) return;
+            let seek = music.seek() || 0;
+            trackSlider.value = seek;
+            currentTimeDisplay.textContent = formatTime(seek);
+            if (music.playing()) {
+                requestAnimationFrame(updateTrackProgress);
+            }
+        }
+    
+        function seek(time) {
+            if (!music) return;
+            music.seek(time);
+            currentTimeDisplay.textContent = formatTime(time);
+        }
+    
+        function seekBackward() {
+            if (!music || isSeeking) return;
+            isSeeking = true;
+            let currentTime = music.seek() || 0;
+            let newTime = Math.max(currentTime - 15, 0);
+            music.seek(newTime);
+
+            setTimeout(() => {
+                isSeeking = false;
+            }, 100);
+        }
+
+        function seekForward() {
+            if (!music || isSeeking) return;
+            isSeeking = true;
+            let currentTime = music.seek() || 0;
+            let newTime = Math.min(currentTime + 15, music.duration());
+            music.seek(newTime);
+
+            setTimeout(() => {
+                isSeeking = false;
+            }, 100);
+        }
+    
+        function changeVolume(volume) {
+            if (!music) return;
+            isMuted = false;
+            music.volume(volume);
+            updateVolumeDisplay(volume);
+            updateVolumeIcon(volume);
+            previousVolume = volume;
+        }
+    
+        function toggleMute() {
+            if (!music) return;
+            if (isMuted) {
+                isMuted = false;
+                music.volume(previousVolume);
+                volumeControl.value = previousVolume;
+                updateVolumeDisplay(previousVolume);
+            } else {
+                previousVolume = volumeControl.value;
+                isMuted = true;
+                music.volume(0);
+                volumeControl.value = 0;
+                updateVolumeDisplay(0);
+            }
+            updateVolumeIcon(isMuted ? 0 : previousVolume);
+        }
+    
+        function updateVolumeIcon(volume) {
+            const volumeIcon = document.getElementById('volumeIcon');
+            const volumeWave = volumeIcon.querySelector('.volume-wave');
+            const volumeWave2 = volumeIcon.querySelector('.volume-wave-2');
+    
+            if (volume === 0 || isMuted) {
+                volumeWave.style.display = 'none';
+                volumeWave2.style.display = 'none';
+            } else if (volume <= 0.5) {
+                volumeWave.style.display = '';
+                volumeWave2.style.display = 'none';
+            } else {
+                volumeWave.style.display = '';
+                volumeWave2.style.display = '';
+            }
+        }
+    
+        function updateVolumeDisplay(volume) {
+            volumeDisplay.textContent = `${Math.round(volume * 100)}%`;
+        }
+    
+        function formatTime(seconds) {
+            let minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    
+        updateVolumeIcon(0.5);
+    
+        // Add Beerus-themed visual effects
+        document.querySelectorAll('.link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'translateY(-2px) scale(1.02)';
+                link.style.boxShadow = '0 8px 20px rgba(255, 215, 0, 0.3)';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = 'translateY(0) scale(1)';
+                link.style.boxShadow = 'none';
+            });
+        });
+    
+        // Add particle effect for destroyed elements
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.background = '#FFD700';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.transform = `translate(-50%, -50%)`;
+            document.body.appendChild(particle);
+    
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 1 + Math.random() * 2;
+            const lifetime = 1000;
+            const startTime = Date.now();
+    
+            function updateParticle() {
+                const elapsed = Date.now() - startTime;
+                if (elapsed > lifetime) {
+                    particle.remove();
+                    return;
+                }
+    
+                const progress = elapsed / lifetime;
+                const currentX = parseFloat(particle.style.left) + Math.cos(angle) * velocity;
+                const currentY = parseFloat(particle.style.top) + Math.sin(angle) * velocity + progress * 50;
+                const opacity = 1 - progress;
+    
+                particle.style.left = `${currentX}px`;
+                particle.style.top = `${currentY}px`;
+                particle.style.opacity = opacity;
+    
+                requestAnimationFrame(updateParticle);
+            }
+    
+            requestAnimationFrame(updateParticle);
+        }
+    
+        // Add destruction effect to links
+        document.querySelectorAll('.link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const rect = link.getBoundingClientRect();
+                for (let i = 0; i < 10; i++) {
+                    const x = rect.left + Math.random() * rect.width;
+                    const y = rect.top + Math.random() * rect.height;
+                    createParticle(x, y);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
